@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from settings import *
 import random
+from tkinter import font
 
 
 class App(ctk.CTk):
@@ -39,7 +40,7 @@ class App(ctk.CTk):
 
         self.result_var = ctk.StringVar(value='RESULT')
         self.result_label = ctk.CTkLabel(master=self, textvariable=self.result_var, text_color=CREAMY,
-                                         font=ctk.CTkFont(size=MEDIUM_FONT_SIZE, family=FONT))
+                                         font=ctk.CTkFont(size=MEDIUM_FONT_SIZE, family=FONT, weight='bold'))
         self.result_label.grid(row=3, column=0, padx=20, pady=10, stick='nsew')
 
         self.attempts_count = ctk.IntVar(value=0)
@@ -57,6 +58,7 @@ class App(ctk.CTk):
         self.mainloop()
 
     def check(self):
+        self.hide_result()
         try:
             value = int(self.input_var.get())
             if value > self.number:
@@ -81,6 +83,13 @@ class App(ctk.CTk):
     def finalize(self):
         self.input_entry.configure(state='disabled')
         self.check_btn.configure(text='reset', command=self.restart)
+
+    def hide_result(self):
+        self.result_label.grid_forget()
+        self.result_label.after(250, self.show_result)
+
+    def show_result(self):
+        self.result_label.grid(row=3, column=0, padx=20, pady=10, stick='nsew')
 
     def restart(self):
         self.input_entry.configure(state='normal')
